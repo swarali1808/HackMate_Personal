@@ -103,14 +103,10 @@ const App = () => {
           <Route path="resources" element={<ErrorBoundary><Resources /></ErrorBoundary>} />
           <Route path="resources/:slug" element={<ErrorBoundary><ResourcePage /></ErrorBoundary>} />
           <Route path="community" element={<ErrorBoundary><Community /></ErrorBoundary>} />
-          <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
-          <Route path="profile/view" element={<ErrorBoundary><ProfileView /></ErrorBoundary>} />
-=======
           <Route path=":userId" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
           <Route path=":userId/view" element={<ErrorBoundary><ProfileView /></ErrorBoundary>} />
           
           {/* Placeholder routes for other sidebar items */}
->>>>>>> 6e8442fd888c0e8251230c32dab2407b8fa82337
           <Route path="products" element={<div className="p-4">Products Page</div>} />
           <Route path="tags" element={<div className="p-4">Tags Page</div>} />
           <Route path="analytics" element={<div className="p-4">Analytics Page</div>} />
