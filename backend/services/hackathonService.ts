@@ -30,7 +30,7 @@ class HackathonService {
             hackathonId: hackathon.id,
             eventName: event.eventName,
             eventTime: new Date(event.eventTime),
-            description: event.description,
+            description: event.description ?? null, // Ensure null values are preserved
           })),
         });
       }

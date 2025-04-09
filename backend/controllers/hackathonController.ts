@@ -8,13 +8,33 @@ export const hackathonController = {
     const { url } = req.body;
 
     try {
-      const html = await scrapeDevfolioPage(url);
-      const data = await extractHackathonData(html);
+      // Scrape all relevant pages
+      const htmlContents = await scrapeDevfolioPage(url);
 
-      if (!data)
+      let combinedData: any = {};
+      let combinedTimeline: any[] = []; // To store all timeline events
+
+      for (const [pageUrl, html] of Object.entries(htmlContents)) {
+        const data = await extractHackathonData(html);
+
+        // Merge data from all pages
+        combinedData = {
+          ...combinedData,
+          ...data,
+          // Combine timeline data
+          timeline: [
+            ...(combinedData.timeline || []),
+            ...(data.timeline || []),
+          ],
+        };
+      }
+
+      if (!combinedData.name) {
         return res.status(400).json({ error: "Failed to extract data" });
+      }
 
-      const stored = await hackathonService.storeHackathonData(data);
+      // Store the combined hackathon data
+      const stored = await hackathonService.storeHackathonData(combinedData);
       res.json({ message: "Hackathon saved", stored });
     } catch (error) {
       console.error(error);
