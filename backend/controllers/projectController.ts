@@ -1,16 +1,15 @@
-// src/controllers/userController.ts
 import { Request, Response, NextFunction } from "express";
-import { userService } from "../services/userService";
-import { UserSchema } from "../schemas/userSchema";
+import { projectService } from "../services/projectService";
+import { ProjectSchema } from "../schemas/projectSchema";
 
-export const userController = {
-  async createUser(req: Request, res: Response, next: NextFunction) {
+export const projectController = {
+  async createProject(req: Request, res: Response, next: NextFunction) {
     try {
-      const input = UserSchema.parse(req.body); // Validate input
-      const user = await userService.createUser(input);
+      const input = ProjectSchema.parse(req.body); // Validate input
+      const project = await projectService.createProject(input);
       res.status(201).json({
         success: true,
-        data: user,
+        data: project,
         error: null,
         metadata: { timestamp: new Date().toISOString(), version: "1.0.0" },
       });
@@ -19,13 +18,13 @@ export const userController = {
     }
   },
 
-  async getUserById(req: Request, res: Response, next: NextFunction) {
+  async getProjectById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const user = await userService.getUserById(id);
+      const project = await projectService.getProjectById(id);
       res.status(200).json({
         success: true,
-        data: user,
+        data: project,
         error: null,
         metadata: { timestamp: new Date().toISOString(), version: "1.0.0" },
       });
@@ -34,12 +33,13 @@ export const userController = {
     }
   },
 
-  async getUsers(req: Request, res: Response, next: NextFunction) {
+  async getProjects(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await userService.getUsers();
+      const { hackathonId } = req.query;
+      const projects = await projectService.getProjects(hackathonId as string);
       res.status(200).json({
         success: true,
-        data: users,
+        data: projects,
         error: null,
         metadata: { timestamp: new Date().toISOString(), version: "1.0.0" },
       });
@@ -48,26 +48,26 @@ export const userController = {
     }
   },
 
-  async updateUser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const input = UserSchema.partial().parse(req.body); // Partial update
-      const user = await userService.updateUser(id, input);
-      res.status(200).json({
-        success: true,
-        data: user,
-        error: null,
-        metadata: { timestamp: new Date().toISOString(), version: "1.0.0" },
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
-
-  async deleteUser(req: Request, res: Response, next: NextFunction) {
+  async updateProject(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      await userService.deleteUser(id);
+      const input = ProjectSchema.partial().parse(req.body); // Partial update
+      const project = await projectService.updateProject(id, input);
+      res.status(200).json({
+        success: true,
+        data: project,
+        error: null,
+        metadata: { timestamp: new Date().toISOString(), version: "1.0.0" },
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async deleteProject(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await projectService.deleteProject(id);
       res.status(204).json({
         success: true,
         data: null,
