@@ -581,9 +581,6 @@ const FormModal = ({
                     <option value="Diploma">Diploma</option>
                     <option value="High School">High School</option>
                   </select>
-                  {errors.grade && (
-                    <p className="text-red-500 text-xs mt-1">{errors.grade}</p>
-                  )}
                 </div>
               )}
               <div>
@@ -598,6 +595,9 @@ const FormModal = ({
                   placeholder="Enter Grade(cgpa)"
                   className="w-full px-3 py-2 border border-[#b6cbff] rounded focus:outline-none focus:ring-1 focus:ring-[#340062]"
                 />
+                {errors.grade && (
+                  <p className="text-red-500 text-xs mt-1">{errors.grade}</p>
+                )}
               </div>
 
               <div>
