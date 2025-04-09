@@ -47,9 +47,9 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="flex items-center justify-center min-h-screen bg-light-primary">
           <div className="text-center">
-          <h2 className="text-2xl text-dark-primary font-poppins">
+            <h2 className="text-2xl text-dark-primary font-poppins">
               Something went wrong.
-          </h2>
+            </h2>
             <p className="text-dark-secondary1 mt-2">
               Please try refreshing the page or contact support if the issue persists.
             </p>

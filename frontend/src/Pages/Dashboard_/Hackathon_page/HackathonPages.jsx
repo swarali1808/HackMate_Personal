@@ -1,6 +1,6 @@
 import React from "react";
+// Adjusted path if needed
 
-// Miro board placeholder component
 export const MiroBoard = () => {
   return (
     <div className="p-6">
@@ -17,24 +17,22 @@ export const MiroBoard = () => {
   );
 };
 
-// Excalidraw placeholder component
-export const Excalidraw = () => {
-  return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-dark-primary font-poppins">Excalidraw Canvas</h2>
-      <div className="bg-light-secondary2 rounded-xl shadow-md p-6">
-        <p className="text-dark-secondary1 font-dmsans">
-          Sketch and design with your team using Excalidraw's collaborative drawing tool. Create wireframes, diagrams, and visual explanations for your project.
-        </p>
-        <div className="bg-gray-100 rounded-lg mt-4 p-4 h-96 flex items-center justify-center border border-gray-300">
-          <p className="text-gray-500">Excalidraw canvas would be embedded here</p>
+export const Excalidraw=()=>{
+    return (
+        <div className="p-6">
+        <h2 className="text-2xl font-bold mb-4 text-dark-primary font-poppins">Excalidraw Integration</h2>
+        <div className="bg-light-secondary2 rounded-xl shadow-md p-6">
+            <p className="text-dark-secondary1 font-dmsans">
+            Use Excalidraw for sketching and designing your project. Create diagrams, wireframes, and illustrations collaboratively.
+            </p>
+            <div className="bg-gray-100 rounded-lg mt-4 p-4 h-96 flex items-center justify-center border border-gray-300">
+            <p className="text-gray-500">Excalidraw board would be embedded here</p>
+            </div>
         </div>
-      </div>
-    </div>
-  );
-};
+        </div>
+    );
+}; // Export corrected component
 
-// Resources placeholder component
 export const HackathonResources = () => {
   return (
     <div className="p-6">
@@ -54,7 +52,6 @@ export const HackathonResources = () => {
   );
 };
 
-// Project placeholder component
 export const Project = () => {
   return (
     <div className="p-6">
@@ -71,7 +68,6 @@ export const Project = () => {
   );
 };
 
-// Submit placeholder component
 export const Submit = () => {
   return (
     <div className="p-6">

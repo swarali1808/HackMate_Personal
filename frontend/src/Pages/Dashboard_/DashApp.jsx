@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Dashboard from "./Landing_Dashboard/Dashboard.jsx";
+import Dashboard from "../../Pages/Landing/Landing_Dashboard/Dashboard.jsx";
 import Sidebar from "../../Component/Sidebar.jsx";
 
 const DashApp = () => {
