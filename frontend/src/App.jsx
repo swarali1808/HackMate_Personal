@@ -17,6 +17,16 @@ import Community from "./Pages/Dashboard_/Community_page/Community.jsx";
 import Profile from "./Pages/Dashboard_/Profile/Profile.jsx";
 import ProfileView from "./Pages/Dashboard_/Profile/ProfileView.jsx";
 
+// Hackathon-specific components
+import HackathonLayout from "./Pages/Dashboard_/Hackathon_page/HackathonLayout.jsx";
+import { 
+  MiroBoard, 
+  Excalidraw, 
+  HackathonResources, 
+  Project, 
+  Submit 
+} from "./Pages/Dashboard_/Hackathon_page/HackathonPages.jsx";
+
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
@@ -56,6 +66,19 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
 
+        {/* Hackathon special routes with custom sidebar */}
+        <Route 
+          path="/dashboard/hackathon/:id/*" 
+          element={isAuthenticated ? <HackathonLayout /> : <Navigate to="/login" />}
+        >
+          <Route index element={<ErrorBoundary><HackathonDetails /></ErrorBoundary>} />
+          <Route path="miro" element={<ErrorBoundary><MiroBoard /></ErrorBoundary>} />
+          <Route path="draw" element={<ErrorBoundary><Excalidraw /></ErrorBoundary>} />
+          <Route path="resources" element={<ErrorBoundary><HackathonResources /></ErrorBoundary>} />
+          <Route path="project" element={<ErrorBoundary><Project /></ErrorBoundary>} />
+          <Route path="submit" element={<ErrorBoundary><Submit /></ErrorBoundary>} />
+        </Route>
+
         {/* Protected Dashboard Routes */}
         <Route
           path="/dashboard/*"
@@ -63,7 +86,6 @@ const App = () => {
         >
           {/* These routes will be rendered inside the <Outlet /> in DashApp */}
           <Route path="hackathons" element={<ErrorBoundary><Hackathons /></ErrorBoundary>} />
-          <Route path="hackathon/:id" element={<ErrorBoundary><HackathonDetails /></ErrorBoundary>} />
           <Route path="resources" element={<ErrorBoundary><Resources /></ErrorBoundary>} />
           <Route path="resources/:slug" element={<ErrorBoundary><ResourcePage /></ErrorBoundary>} />
           <Route path="community" element={<ErrorBoundary><Community /></ErrorBoundary>} />
