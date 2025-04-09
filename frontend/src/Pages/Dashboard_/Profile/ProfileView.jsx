@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { 
   FiArrowLeft, FiDownload, FiCalendar, FiExternalLink, FiUser, 
   FiBriefcase, FiAward, FiCheck, FiCode, FiLink, FiGithub, 
@@ -10,6 +10,7 @@ import jsPDF from 'jspdf';
 
 const ProfileView = () => {
   const navigate = useNavigate();
+  const { userId } = useParams()
   const [profileData, setProfileData] = useState(null);
   const [resumeData, setResumeData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,8 +20,10 @@ const ProfileView = () => {
   useEffect(() => {
     // Load profile data from localStorage
     try {
-      const savedProfileData = localStorage.getItem(`profileData_${currentUser}`);
-      const savedResumeData = localStorage.getItem(`resumeData_${currentUser}`);
+      // Don't reassign userId - use it directly or use a derived value
+      const userToLoad = currentUser;
+      const savedProfileData = localStorage.getItem(`profileData_${userToLoad}`);
+      const savedResumeData = localStorage.getItem(`resumeData_${userToLoad}`);
       
       if (savedProfileData) {
         setProfileData(JSON.parse(savedProfileData));
@@ -36,6 +39,7 @@ const ProfileView = () => {
       setLoading(false);
     }
   }, [currentUser]);
+
   
   const handleBackClick = () => {
     navigate(-1);
@@ -108,7 +112,7 @@ const ProfileView = () => {
         <div className="bg-white p-8 rounded-lg shadow">
           <p className="text-[#340062]">No profile data found. Please create your profile first.</p>
           <button 
-            onClick={() => navigate('/dashboard/profile')}
+            onClick={() => navigate(`/dashboard/${currentUser ? currentUser : "tanishshah20"}`)}
             className="mt-4 px-6 py-2 bg-[#340062] text-white font-medium rounded-md"
           >
             Go to Profile

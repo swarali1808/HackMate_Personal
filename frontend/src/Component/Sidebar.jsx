@@ -208,6 +208,7 @@ const Option = ({ Icon, title, path, selected, setSelected, open, notifs }) => {
 const TitleSection = ({ open }) => {
   const profileImage = null;
   const userName = null;
+  const userId = null;
   const userEmail = null;
   return (
     <div className="mb-3 border-b border-[#b6cbff] pb-3">
@@ -233,7 +234,7 @@ const TitleSection = ({ open }) => {
               style={{ fontFamily: "var(--font-dmsans)" }}
             >
               <Link className="block text-sm font-semibold text-[#340062]"
-                to="/dashboard/profile"
+                to={`/dashboard/${userId ? userId : "tanishshah20"}`}
               >
                 {userName? userName:"Tanish Shah"}
               </Link>

@@ -5,8 +5,10 @@ import SkillsTab from './TabComponents/SkillsTab';
 import SocialLinksTab from './TabComponents/SocialLinksTab';
 import TaglineTab from './TabComponents/TagLineTab';
 import BadgesTab from './TabComponents/BadgesTab';
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
+  const { userId } = useParams()
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('Education');
   const [editIndex, setEditIndex] = useState(-1); // -1 means adding new, >= 0 means editing
@@ -48,7 +50,9 @@ const Profile = () => {
   // Function to load saved data from local storage
   useEffect(() => {
     try {
-      const savedData = localStorage.getItem(`profileData_${currentUser}`);
+      // Don't reassign userId - use it directly or use a derived value
+      const userToLoad = currentUser;
+      const savedData = localStorage.getItem(`profileData_${userToLoad}`);
       if (savedData) {
         setProfileData(JSON.parse(savedData));
       }
@@ -178,6 +182,7 @@ const Profile = () => {
         onDeleteItem={openDeleteConfirm}
         profileData={profileData}
         username={currentUser}
+        userId={currentUser}
         predefinedSkills={predefinedSkills}
       />
       
