@@ -1,0 +1,38 @@
+/* src/Styles/Resources.css */
+.resource-card,
+.resource-item {
+  transition: all 0.3s ease;
+}
+
+.resource-card:hover,
+.resource-item:hover {
+  background-color: #f6ebff;
+}
+
+.sticky {
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.resource-card {
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Truncate description text to 3 lines */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Ensure fonts are consistent with sidebar */
+.font-poppins {
+  font-family: var(--font-poppins);
+}
+
+.font-dmsans {
+  font-family: var(--font-dmsans);
+}

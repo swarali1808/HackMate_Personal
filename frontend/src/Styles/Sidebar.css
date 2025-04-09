@@ -1,0 +1,51 @@
+.dash-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+  }
+  
+  .sidebar {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  /* Add these styles to your Sidebar.css file */
+
+.dash-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Content adjustments based on sidebar state */
+.routes {
+  transition: margin-left 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  nav[data-state="open"] + .routes {
+    margin-left: 225px;
+  }
+  
+  nav[data-state="closed"] + .routes {
+    margin-left: 60px;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  nav {
+    position: fixed;
+    z-index: 40;
+  }
+  
+  .routes {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+}
+  .routes {
+    flex: 1;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }

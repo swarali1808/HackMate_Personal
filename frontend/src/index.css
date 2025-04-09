@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+@theme {
+  --font-dmsans: "DM Sans", sans-serif; 
+  --font-outfit: "Outfit", sans-serif; 
+  --font-poppins: "Poppins", sans-serif; 
+}
+
+@theme {
+  --color-light-primary: #f6ebff;
+  --color-light-secondary1: #b6cbff;
+  --color-light-secondary2: #FFFFFF;
+  --color-dark-primary: #340062;
+  --color-dark-secondary1: #11014c;
+  --color-dark-secondary2: #000000;
+} */
+
+html, body {
+  height: 100%;
+  overflow-y: auto !important;
+  scroll-behavior: smooth !important;
+}
+
+
+body {
+  --sb-track-color: #f6ebff;
+  --sb-thumb-color: #11014c;
+  --sb-size: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: var(--sb-size)
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 1px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 1px;
+  
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color)
+                     var(--sb-track-color);
+  }
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+#scrollbar {
+  --sb-track-color: #FFFFFF;
+  --sb-thumb-color: #11014c;
+  --sb-size: 10px;
+}
+
+#scrollbar::-webkit-scrollbar {
+  width: var(--sb-size)
+}
+
+#scrollbar::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 1px;
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 5px;
+  
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  #scrollbar {
+    scrollbar-color: var(--sb-thumb-color)
+                     var(--sb-track-color);
+  }
+}
