@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 // Fix 1: Comment out the direct import and use a placeholder or public URL instead
 import image2 from "../../Assets/loginimg.jpg";
+import { FaGoogle, FaApple } from "react-icons/fa";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -219,9 +220,7 @@ const LoginPage = () => {
                 whileHover={{ scale: 1.03, borderColor: "#6d28d9" }}
                 whileTap={{ scale: 0.97 }}
               >
-                <img
-                  src="/api/placeholder/20/20"
-                  alt="Google"
+                <FaGoogle
                   className="w-5 h-5 mr-2"
                 />
                 Google
@@ -232,9 +231,7 @@ const LoginPage = () => {
                 whileHover={{ scale: 1.03, borderColor: "#6d28d9" }}
                 whileTap={{ scale: 0.97 }}
               >
-                <img
-                  src="/api/placeholder/20/20"
-                  alt="Github"
+                <FaApple
                   className="w-5 h-5 mr-2"
                 />
                 Github
