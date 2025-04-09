@@ -316,12 +316,12 @@ model Badge {
   name         String      @unique
   description  String
   icon         String      // Store icon name or URL
-  color        String
+  color        String?     // Make this optional
   gradientFrom String?
   gradientTo   String?
   category     String
   rarity       BadgeRarity
-  image        String
+  image        String?     // Make this optional
   userBadges   UserBadge[]
 
   @@map("badges")

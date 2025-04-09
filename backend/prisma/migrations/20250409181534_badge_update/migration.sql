@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "badges" ALTER COLUMN "color" DROP NOT NULL,
+ALTER COLUMN "image" DROP NOT NULL;
