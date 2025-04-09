@@ -8,7 +8,8 @@ const ProfileSection = ({
   onEditItem, 
   onDeleteItem, 
   profileData, 
-  username
+  username,
+  userId
 }) => {
   const [activeTab, setActiveTab] = useState('Education');
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const ProfileSection = ({
   
   // Navigation handlers
   const handleViewProfile = () => {
-    navigate('/dashboard/profile/view');
+    navigate(`/dashboard/${userId}/view`);
   };
 
   // Function to render content based on active tab and data
