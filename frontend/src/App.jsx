@@ -10,7 +10,7 @@ import ScrollToTop from "./ScrollToTop.jsx";
 
 // Dashboard components
 import Hackathons from "./Pages/Dashboard_/Hackathon_page/Hackathons.jsx";
-import HackathonDetails from "./Pages/Dashboard_/Hackathon_page/HackathonDeatils.jsx";
+import HackathonDetails from "../src/Pages/Dashboard_/Hackathon_page/HackathonDeatils.jsx"; // Ensure this file exists
 import Resources from "./Pages/Dashboard_/Resources_page/Resources.jsx";
 import ResourcePage from "./Pages/Dashboard_/Resources_page/ResourcePage.jsx";
 import Community from "./Pages/Dashboard_/Community_page/Community.jsx";
@@ -27,25 +27,41 @@ import {
   Submit 
 } from "./Pages/Dashboard_/Hackathon_page/HackathonPages.jsx";
 
-// Error Boundary Component
+// Error Boundary Component with improved logging
 class ErrorBoundary extends React.Component {
-  state = { hasError: false };
+  state = { hasError: false, error: null, errorInfo: null };
 
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("Error caught by boundary:", error, errorInfo);
+    // Log the error to console for debugging
+    console.error("Error caught by ErrorBoundary:", error);
+    console.error("Error Info:", errorInfo);
+    this.setState({ error, errorInfo });
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div className="flex items-center justify-center min-h-screen bg-light-primary">
+          <div className="text-center">
           <h2 className="text-2xl text-dark-primary font-poppins">
-            Something went wrong. Please try again later.
+              Something went wrong.
           </h2>
+            <p className="text-dark-secondary1 mt-2">
+              Please try refreshing the page or contact support if the issue persists.
+            </p>
+            {/* Optional: Display error details in development */}
+            {process.env.NODE_ENV === "development" && (
+              <pre className="text-red-600 mt-4">
+                {this.state.error?.toString()}
+                <br />
+                {this.state.errorInfo?.componentStack}
+              </pre>
+            )}
+          </div>
         </div>
       );
     }
@@ -54,17 +70,16 @@ class ErrorBoundary extends React.Component {
 }
 
 const App = () => {
-  // Mock authentication (replace with real auth logic)
-  const isAuthenticated = true;
+  const isAuthenticated = true; // Replace with real auth logic later
 
   return (
     <div className="min-h-screen max-w-screen m-0 p-0 overflow-x-hidden overflow-y-auto relative transition-all scroll-smooth">
       <ScrollToTop />
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
+        <Route path="/login" element={<ErrorBoundary><LoginPage /></ErrorBoundary>} />
+        <Route path="/signup" element={<ErrorBoundary><SignUpPage /></ErrorBoundary>} />
 
         {/* Hackathon special routes with custom sidebar */}
         <Route 
@@ -84,22 +99,19 @@ const App = () => {
           path="/dashboard/*"
           element={isAuthenticated ? <DashApp /> : <Navigate to="/login" />}
         >
-          {/* These routes will be rendered inside the <Outlet /> in DashApp */}
           <Route path="hackathons" element={<ErrorBoundary><Hackathons /></ErrorBoundary>} />
           <Route path="resources" element={<ErrorBoundary><Resources /></ErrorBoundary>} />
           <Route path="resources/:slug" element={<ErrorBoundary><ResourcePage /></ErrorBoundary>} />
           <Route path="community" element={<ErrorBoundary><Community /></ErrorBoundary>} />
           <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
           <Route path="profile/view" element={<ErrorBoundary><ProfileView /></ErrorBoundary>} />
-          
-          {/* Placeholder routes for other sidebar items */}
           <Route path="products" element={<div className="p-4">Products Page</div>} />
           <Route path="tags" element={<div className="p-4">Tags Page</div>} />
           <Route path="analytics" element={<div className="p-4">Analytics Page</div>} />
         </Route>
 
         {/* Fallback Route */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
       </Routes>
     </div>
   );
