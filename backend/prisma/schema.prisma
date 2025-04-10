@@ -119,6 +119,8 @@ model User {
   googleRefreshToken     String?
   verificationToken      String?
   verificationTokenExpiry DateTime?
+  refreshToken            String?
+  accessToken           String?
 
   // New Profile Fields
   tagline                String?
@@ -192,6 +194,7 @@ model Team {
 model Hackathon {
   id           String              @id @default(uuid()) @db.Uuid
   name         String
+  slug         String?
   description  String?
   startDate    String
   endDate      String
@@ -228,7 +231,7 @@ model UserProject {
   id               String    @id @default(uuid())
   userId           String
   title            String
-  description      String
+  description      String?   // Make this optional
   technologiesUsed String[]
   deployedUrl      String?
   repoUrl          String?
@@ -246,34 +249,36 @@ model Position {
   organization String
   startDate    DateTime
   endDate      DateTime?
-  description  String
+  description  String?
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("positions")
 }
 
 model WorkExperience {
-  id             String         @id @default(uuid())
+  id             String   @id @default(uuid())
   userId         String
   companyName    String
+  role           String
   position       String
-  employmentType EmploymentType
+  employmentType String
   startDate      DateTime
   endDate        DateTime?
-  description    String
-  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description    String?
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("work_experiences")
 }
 
 model Achievement {
-  id                   String    @id @default(uuid())
-  userId               String
-  title                String
+  id                  String   @id @default(uuid())
+  userId              String
+  title               String
+  description         String?
+  date                DateTime
+  type                String
   issuingOrganization String
-  date                 DateTime
-  description          String
-  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("achievements")
 }
@@ -314,12 +319,12 @@ model Badge {
   name         String      @unique
   description  String
   icon         String      // Store icon name or URL
-  color        String
+  color        String?     // Make this optional
   gradientFrom String?
   gradientTo   String?
-  category     String
+  category     String?
   rarity       BadgeRarity
-  image        String
+  image        String?     // Make this optional
   userBadges   UserBadge[]
 
   @@map("badges")
@@ -341,13 +346,17 @@ model UserBadge {
 // Resources System
 model Resource {
   id          String         @id @default(uuid())
-  slug        String         @unique
   title       String
-  description String
-  items       ResourceItem[]
+  description String?
+  url         String
+  category    String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  items       ResourceItem[] // Add this relation field to link ResourceItems
 
   @@map("resources")
 }
+
 
 model ResourceItem {
   id          String    @id @default(uuid())
@@ -382,39 +391,40 @@ model Commit {
 // Existing Project Management Models
 model Project {
   id                       String               @id @default(uuid())
-  name                     String
-  description             String?
-  teamId                  String               @unique
-  hackathonId             String?              @db.Uuid
-  createdAt               DateTime             @default(now())
-  updatedAt               DateTime             @updatedAt
-  totalCommits            Int                  @default(0)
-  totalPRs                Int                  @default(0)
-  totalIssues             Int                  @default(0)
-  efficiencyScore         Float?
-  codeQuality             Float?
-  aiGeneratedDocs         Json?
+  name                     String               // Compulsory
+  description              String               // Compulsory
+  problemStatement         String               // Compulsory
+  psDomain                 String               // Compulsory
+  teamId                   String?              @unique
+  hackathonId              String?              @db.Uuid
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+  totalCommits             Int?                 @default(0)
+  totalPRs                 Int?                 @default(0)
+  totalIssues              Int?                 @default(0)
+  efficiencyScore          Float?
+  codeQuality              Float?
+  aiGeneratedDocs          Json?
   aiImprovementSuggestions Json?
-  keyInnovations          Json?
-  memberContributions     Json?
-  technologyStack         String[]
-  problemStatement        String?
-  solutionOverview        String?
-  repositoryUrl           String?
-  submissionUrl           String?
-  team                    Team                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  tasks                   Task[]               @relation("ProjectTasks")
-  aiRecommendations       AIRecommendation[]
-  eventLogs               EventLog[]
-  githubContributions     GitHubContribution[]
-  notifications           Notification[]
-  progressUpdates         ProgressUpdate[]     @relation("ProjectProgressUpdates")
-  projectAssessment       ProjectAssessment?
-  members                 ProjectMember[]
-  report                  ProjectReport?
-  submissionFeedback      SubmissionFeedback?
-  timelineSuggestions     TimelineSuggestion[]
-  technologies            Skill[]              @relation("ProjectTechnologies")
+  keyInnovations           Json?
+  memberContributions      Json?
+  technologyStack          String[]
+  solutionOverview         String?
+  repositoryUrl            String?
+  submissionUrl            String?
+  team                     Team?                @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  tasks                    Task[]               @relation("ProjectTasks")
+  aiRecommendations        AIRecommendation[]
+  eventLogs                EventLog[]
+  githubContributions      GitHubContribution[]
+  notifications            Notification[]
+  progressUpdates          ProgressUpdate[]     @relation("ProjectProgressUpdates")
+  projectAssessment        ProjectAssessment?
+  members                  ProjectMember[]
+  report                   ProjectReport?
+  submissionFeedback       SubmissionFeedback?
+  timelineSuggestions      TimelineSuggestion[]
+  technologies             Skill[]              @relation("ProjectTechnologies")
 }
 
 // Continuing with existing models...
@@ -422,11 +432,11 @@ model Task {
   id                 String               @id @default(uuid())
   projectId          String?
   title              String
-  description        String
+  description        String?
   status             Status               @default(PENDING)
   assigneeId         String?
   priority           TaskPriority         @default(MEDIUM)
-  dueDate            DateTime?
+  dueDate            DateTime
   estimatedTime      Float?
   actualTime         Float?
   dependencies       String[]
@@ -435,6 +445,7 @@ model Task {
   teamId             String
   difficulty         Difficulty           @default(MEDIUM)
   aiSuggestion       Boolean              @default(false)
+  assignedTo         String?
   checkList          CheckListItem[]
   assignee           User?                @relation("TaskAssignee", fields: [assigneeId], references: [id])
   project            Project?             @relation("ProjectTasks", fields: [projectId], references: [id], onDelete: Cascade)

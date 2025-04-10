@@ -10,6 +10,18 @@ import userRoutes from "./routes/userRoutes";
 import hackathonRoutes from "./routes/hackathonRoutes";
 import githubRoutes from "./routes/githubRoutes";
 import teamRoutes from "./routes/teamRoutes";
+import educationRoutes from "./routes/educationRoutes";
+import workExperienceRoutes from "./routes/workExperienceRoutes";
+import achievementRoutes from "./routes/achievementRoutes";
+import certificateRoutes from "./routes/certificateRoutes";
+import userProjectRoutes from "./routes/userProjectRoutes";
+import positionRoutes from "./routes/positionRoutes";
+import hackathonTimelineRoutes from "./routes/hackathonTimelineRoutes";
+import taskRoutes from "./routes/taskRoutes";
+import resourceRoutes from "./routes/resourceRoutes";
+import projectRoutes from "./routes/projectRoutes";
+
+import listEndpoints from "express-list-endpoints";
 
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import "./utils/passport";
@@ -47,9 +59,24 @@ app.use("/users", userRoutes);
 app.use("/github", githubRoutes);
 app.use("/hackathon", hackathonRoutes);
 app.use("/teams", teamRoutes);
+app.use("/education", educationRoutes);
+app.use("/work-experience", workExperienceRoutes);
+app.use("/achievements", achievementRoutes);
+app.use("/certificates", certificateRoutes);
+app.use("/user-projects", userProjectRoutes);
+app.use("/positions", positionRoutes);
+app.use("/hackathon-timeline", hackathonTimelineRoutes);
+app.use("/tasks", taskRoutes);
+app.use("/resources", resourceRoutes);
+app.use("/projects", projectRoutes);
 
 // Error handling
 app.use(errorMiddleware);
+
+// //List all endpoints
+// const endpoints = listEndpoints(app);
+// console.log("Available Endpoints:");
+// console.table(endpoints);
 
 // Graceful shutdown
 process.on("SIGINT", async () => {

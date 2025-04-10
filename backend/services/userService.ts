@@ -1,25 +1,40 @@
 // src/services/userService.ts
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
+import { UserSchema } from "../schemas/userSchema";
 
 const prisma = new PrismaClient();
 
-export class UserService {
+export const userService = {
+  async createUser(data: z.infer<typeof UserSchema>) {
+    return await prisma.user.create({
+      data,
+    });
+  },
+
   async getUserById(id: string) {
-    const user = await prisma.user.findUnique({
+    return await prisma.user.findUnique({
       where: { id },
-      select: { id: true, email: true, name: true, bio: true, skills: true }, // Public fields
+      include: { teams: true, tasksAssigned: true, hackathons: true }, // Include related data
     });
-    if (!user) throw new Error('User not found');
-    return user;
-  }
+  },
 
-  async updateUser(id: string, updates: any) {
-    const user = await prisma.user.update({
+  async getUsers() {
+    return await prisma.user.findMany({
+      include: { teams: true, hackathons: true }, // Include related data
+    });
+  },
+
+  async updateUser(id: string, data: Partial<z.infer<typeof UserSchema>>) {
+    return await prisma.user.update({
       where: { id },
-      data: updates,
+      data,
     });
-    return user;
-  }
-}
+  },
 
-export const userService = new UserService();
+  async deleteUser(id: string) {
+    return await prisma.user.delete({
+      where: { id },
+    });
+  },
+};
