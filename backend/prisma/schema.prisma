@@ -119,6 +119,8 @@ model User {
   googleRefreshToken     String?
   verificationToken      String?
   verificationTokenExpiry DateTime?
+  refreshToken            String?
+  accessToken           String?
 
   // New Profile Fields
   tagline                String?
@@ -192,6 +194,7 @@ model Team {
 model Hackathon {
   id           String              @id @default(uuid()) @db.Uuid
   name         String
+  slug         String?
   description  String?
   startDate    String
   endDate      String
@@ -319,7 +322,7 @@ model Badge {
   color        String?     // Make this optional
   gradientFrom String?
   gradientTo   String?
-  category     String
+  category     String?
   rarity       BadgeRarity
   image        String?     // Make this optional
   userBadges   UserBadge[]
@@ -398,6 +401,7 @@ model Project {
   totalPRs                Int                  @default(0)
   totalIssues             Int                  @default(0)
   efficiencyScore         Float?
+  psDomain                String
   codeQuality             Float?
   aiGeneratedDocs         Json?
   aiImprovementSuggestions Json?

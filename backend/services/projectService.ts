@@ -6,8 +6,31 @@ const prisma = new PrismaClient();
 
 export const projectService = {
   async createProject(data: z.infer<typeof ProjectSchema>) {
+    if (!data.teamId) {
+      throw new Error("The 'teamId' field is required to create a project.");
+    }
+
+    if (!data.technologyStack) {
+      throw new Error("The 'technologyStack' field is required to create a project.");
+    }
+
+    if (!data.psDomain) {
+      throw new Error("The 'psDomain' field is required to create a project.");
+    }
+
     return await prisma.project.create({
-      data,
+      data: {
+        name: data.name,
+        description: data.description,
+        teamId: data.teamId,
+        hackathonId: data.hackathonId,
+        repositoryUrl: data.repositoryUrl,
+        submissionUrl: data.submissionUrl,
+        technologyStack: data.technologyStack,
+        problemStatement: data.problemStatement,
+        solutionOverview: data.solutionOverview,
+        psDomain: data.psDomain,
+      },
     });
   },
 

@@ -6,4 +6,6 @@ export const BadgeSchema = z.object({
   icon: z.string().url("Invalid icon URL"),
   category: z.string().optional(),
   rarity: z.enum(["COMMON", "RARE", "EPIC", "LEGENDARY"]),
+  color: z.string().optional(), // Add color as an optional field
+  image: z.string().optional(), // Add image as an optional field
 });

@@ -10,4 +10,5 @@ export const ProjectSchema = z.object({
   technologyStack: z.array(z.string()).optional(),
   problemStatement: z.string().optional(),
   solutionOverview: z.string().optional(),
+  psDomain: z.string().min(1, "The 'psDomain' field is required"),
 });
