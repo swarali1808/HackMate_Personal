@@ -21,6 +21,8 @@ import taskRoutes from "./routes/taskRoutes";
 import resourceRoutes from "./routes/resourceRoutes";
 import projectRoutes from "./routes/projectRoutes";
 
+import listEndpoints from "express-list-endpoints";
+
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import "./utils/passport";
 
@@ -70,6 +72,11 @@ app.use("/projects", projectRoutes);
 
 // Error handling
 app.use(errorMiddleware);
+
+// //List all endpoints
+// const endpoints = listEndpoints(app);
+// console.log("Available Endpoints:");
+// console.table(endpoints);
 
 // Graceful shutdown
 process.on("SIGINT", async () => {

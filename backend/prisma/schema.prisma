@@ -391,40 +391,40 @@ model Commit {
 // Existing Project Management Models
 model Project {
   id                       String               @id @default(uuid())
-  name                     String
-  description             String?
-  teamId                  String               @unique
-  hackathonId             String?              @db.Uuid
-  createdAt               DateTime             @default(now())
-  updatedAt               DateTime             @updatedAt
-  totalCommits            Int                  @default(0)
-  totalPRs                Int                  @default(0)
-  totalIssues             Int                  @default(0)
-  efficiencyScore         Float?
-  psDomain                String
-  codeQuality             Float?
-  aiGeneratedDocs         Json?
+  name                     String               // Compulsory
+  description              String               // Compulsory
+  problemStatement         String               // Compulsory
+  psDomain                 String               // Compulsory
+  teamId                   String?              @unique
+  hackathonId              String?              @db.Uuid
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+  totalCommits             Int?                 @default(0)
+  totalPRs                 Int?                 @default(0)
+  totalIssues              Int?                 @default(0)
+  efficiencyScore          Float?
+  codeQuality              Float?
+  aiGeneratedDocs          Json?
   aiImprovementSuggestions Json?
-  keyInnovations          Json?
-  memberContributions     Json?
-  technologyStack         String[]
-  problemStatement        String?
-  solutionOverview        String?
-  repositoryUrl           String?
-  submissionUrl           String?
-  team                    Team?                @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  tasks                   Task[]               @relation("ProjectTasks")
-  aiRecommendations       AIRecommendation[]
-  eventLogs               EventLog[]
-  githubContributions     GitHubContribution[]
-  notifications           Notification[]
-  progressUpdates         ProgressUpdate[]     @relation("ProjectProgressUpdates")
-  projectAssessment       ProjectAssessment?
-  members                 ProjectMember[]
-  report                  ProjectReport?
-  submissionFeedback      SubmissionFeedback?
-  timelineSuggestions     TimelineSuggestion[]
-  technologies            Skill[]              @relation("ProjectTechnologies")
+  keyInnovations           Json?
+  memberContributions      Json?
+  technologyStack          String[]
+  solutionOverview         String?
+  repositoryUrl            String?
+  submissionUrl            String?
+  team                     Team?                @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  tasks                    Task[]               @relation("ProjectTasks")
+  aiRecommendations        AIRecommendation[]
+  eventLogs                EventLog[]
+  githubContributions      GitHubContribution[]
+  notifications            Notification[]
+  progressUpdates          ProgressUpdate[]     @relation("ProjectProgressUpdates")
+  projectAssessment        ProjectAssessment?
+  members                  ProjectMember[]
+  report                   ProjectReport?
+  submissionFeedback       SubmissionFeedback?
+  timelineSuggestions      TimelineSuggestion[]
+  technologies             Skill[]              @relation("ProjectTechnologies")
 }
 
 // Continuing with existing models...
