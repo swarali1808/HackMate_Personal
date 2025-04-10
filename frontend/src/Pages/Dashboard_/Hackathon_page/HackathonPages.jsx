@@ -1,16 +1,16 @@
 import React from "react";
 // Adjusted path if needed
 
-export const MiroBoard = () => {
+export const JiraBoard = () => {
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-dark-primary font-poppins">Miro Board Integration</h2>
+      <h2 className="text-2xl font-bold mb-4 text-dark-primary font-poppins">Jira Board Integration</h2>
       <div className="bg-light-secondary2 rounded-xl shadow-md p-6">
         <p className="text-dark-secondary1 font-dmsans">
-          Collaborate with your team using Miro's virtual whiteboard. Brainstorm ideas, plan your hackathon project, and visualize your solutions.
+          Collaborate with your team using Jira's virtual whiteboard. Brainstorm ideas, plan your hackathon project, and visualize your solutions.
         </p>
         <div className="bg-gray-100 rounded-lg mt-4 p-4 h-96 flex items-center justify-center border border-gray-300">
-          <p className="text-gray-500">Miro board would be embedded here</p>
+          <p className="text-gray-500">Jira board would be embedded here</p>
         </div>
       </div>
     </div>

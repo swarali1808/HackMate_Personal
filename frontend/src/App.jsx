@@ -19,12 +19,12 @@ import ProfileView from "./Pages/Dashboard_/Profile/ProfileView.jsx";
 
 // Hackathon-specific components
 import HackathonLayout from "./Pages/Dashboard_/Hackathon_page/HackathonLayout.jsx";
-import { 
-  MiroBoard, 
+import {
   Excalidraw, 
   HackathonResources, 
   Project, 
-  Submit 
+  Submit, 
+  JiraBoard
 } from "./Pages/Dashboard_/Hackathon_page/HackathonPages.jsx";
 
 // Error Boundary Component with improved logging
@@ -87,7 +87,7 @@ const App = () => {
           element={isAuthenticated ? <HackathonLayout /> : <Navigate to="/login" />}
         >
           <Route index element={<ErrorBoundary><HackathonDetails /></ErrorBoundary>} />
-          <Route path="miro" element={<ErrorBoundary><MiroBoard /></ErrorBoundary>} />
+          <Route path="jira" element={<ErrorBoundary><JiraBoard /></ErrorBoundary>} />
           <Route path="draw" element={<ErrorBoundary><Excalidraw /></ErrorBoundary>} />
           <Route path="resources" element={<ErrorBoundary><HackathonResources /></ErrorBoundary>} />
           <Route path="project" element={<ErrorBoundary><Project /></ErrorBoundary>} />

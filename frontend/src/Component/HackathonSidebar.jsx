@@ -9,7 +9,7 @@ import { FaUser } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MdDraw, MdOutlineIntegrationInstructions } from "react-icons/md";
 import { BsClipboardData } from "react-icons/bs";
-import { SiMiro } from "react-icons/si";
+import { SiJira } from "react-icons/si";
 import { GoProject } from "react-icons/go";
 import { TbFileDescription } from "react-icons/tb";
 
@@ -22,7 +22,7 @@ const HackathonSidebar = ({ hackathonSlug }) => {
   // Determine selected sidebar item based on current path
   const [selected, setSelected] = useState(
     currentPath.includes("/submit") ? "Submit" :
-    currentPath.includes("/miro") ? "Miro" :
+    currentPath.includes("/jira") ? "Jira" :
     currentPath.includes("/draw") ? "Excalidraw" :
     "Overview"
   );
@@ -89,9 +89,9 @@ const HackathonSidebar = ({ hackathonSlug }) => {
           exact={true}
         />
         <HackOption
-          Icon={SiMiro}
-          title="Miro"
-          path={`/dashboard/hackathon/${hackathonSlug}/miro`}
+          Icon={SiJira}
+          title="Jira"
+          path={`/dashboard/hackathon/${hackathonSlug}/jira`}
           selected={selected}
           setSelected={setSelected}
           open={open}

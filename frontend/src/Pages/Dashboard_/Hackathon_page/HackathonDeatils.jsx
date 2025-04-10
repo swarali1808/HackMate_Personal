@@ -369,12 +369,21 @@ const HackathonDetails = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-light-primary text-dark-primary font-outfit">
+      <motion.button
+        onClick={() => navigate("/dashboard/hackathons")}
+        className="flex items-center text-dark-primary hover:text-dark-secondary1 mb-4 font-poppins"
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+      </motion.button>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="bg-gradient-to-r from-dark-primary to-dark-secondary1 rounded-xl text-light-secondary2 p-6 mt-2 mb-8 shadow-lg">
+        <div className="bg-gradient-to-r from-dark-primary to-dark-secondary1 rounded-xl text-light-secondary2 p-6 mb-8 shadow-lg">
           <div className="max-w-3xl">
             <h1 className="text-4xl font-bold mb-2 font-poppins">{hackathon.name}</h1>
             <p className="mb-4 text-light-secondary1 font-dmsans">{hackathon.description}</p>
