@@ -83,7 +83,7 @@ const App = () => {
 
         {/* Hackathon special routes with custom sidebar */}
         <Route 
-          path="/dashboard/hackathon/:id/*" 
+          path="/dashboard/hackathon/:slug/*" 
           element={isAuthenticated ? <HackathonLayout /> : <Navigate to="/login" />}
         >
           <Route index element={<ErrorBoundary><HackathonDetails /></ErrorBoundary>} />

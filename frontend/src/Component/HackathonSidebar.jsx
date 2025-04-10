@@ -13,7 +13,7 @@ import { SiMiro } from "react-icons/si";
 import { GoProject } from "react-icons/go";
 import { TbFileDescription } from "react-icons/tb";
 
-const HackathonSidebar = ({ hackathonId }) => {
+const HackathonSidebar = ({ hackathonSlug }) => {
   const [open, setOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ const HackathonSidebar = ({ hackathonId }) => {
         <HackOption
           Icon={TbFileDescription}
           title="Overview"
-          path={`/dashboard/hackathon/${hackathonId}`}
+          path={`/dashboard/hackathon/${hackathonSlug}`}
           selected={selected}
           setSelected={setSelected}
           open={open}
@@ -91,7 +91,7 @@ const HackathonSidebar = ({ hackathonId }) => {
         <HackOption
           Icon={SiMiro}
           title="Miro"
-          path={`/dashboard/hackathon/${hackathonId}/miro`}
+          path={`/dashboard/hackathon/${hackathonSlug}/miro`}
           selected={selected}
           setSelected={setSelected}
           open={open}
@@ -99,7 +99,7 @@ const HackathonSidebar = ({ hackathonId }) => {
         <HackOption
           Icon={MdDraw}
           title="Excalidraw"
-          path={`/dashboard/hackathon/${hackathonId}/draw`}
+          path={`/dashboard/hackathon/${hackathonSlug}/draw`}
           selected={selected}
           setSelected={setSelected}
           open={open}
@@ -107,7 +107,7 @@ const HackathonSidebar = ({ hackathonId }) => {
         <HackOption
           Icon={BsClipboardData}
           title="Resources"
-          path={`/dashboard/hackathon/${hackathonId}/resources`}
+          path={`/dashboard/hackathon/${hackathonSlug}/resources`}
           selected={selected}
           setSelected={setSelected}
           open={open}
@@ -115,7 +115,7 @@ const HackathonSidebar = ({ hackathonId }) => {
         <HackOption
           Icon={GoProject}
           title="Project"
-          path={`/dashboard/hackathon/${hackathonId}/project`}
+          path={`/dashboard/hackathon/${hackathonSlug}/project`}
           selected={selected}
           setSelected={setSelected}
           open={open}
@@ -123,7 +123,7 @@ const HackathonSidebar = ({ hackathonId }) => {
         <HackOption
           Icon={MdOutlineIntegrationInstructions}
           title="Submit"
-          path={`/dashboard/hackathon/${hackathonId}/submit`}
+          path={`/dashboard/hackathon/${hackathonSlug}/submit`}
           selected={selected}
           setSelected={setSelected}
           open={open}

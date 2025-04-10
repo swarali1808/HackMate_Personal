@@ -16,7 +16,7 @@ import JoinTeamModal from "../../../Component/JoinTeamModal.jsx";
 import HackathonTimeLine from "../../../Component/HackathonTimeLine.jsx";
 
 const HackathonDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [hackathon, setHackathon] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -45,18 +45,18 @@ const HackathonDetails = () => {
     }
     
     // Find the hackathon with the matching ID
-    const found = allHackathons.find((h) => h.id === id);
+    const found = allHackathons.find((h) => h.slug === slug);
     if (found) {
       setHackathon(found);
     } else {
-      console.error("Hackathon not found with id:", id);
+      console.error("Hackathon not found with id:", slug);
     }
     
     // Mock API call to check if user has a team for this hackathon
     fetchUserTeam();
     
     setLoading(false);
-  }, [id]);
+  }, [slug]);
 
   // Function to fetch user's team data
   const fetchUserTeam = () => {
@@ -107,7 +107,8 @@ const HackathonDetails = () => {
       id: "team-" + Math.random().toString(36).substr(2, 9),
       name: teamData.name,
       members: [{ id: "current-user", name: "You (Team Leader)", role: "Leader" }],
-      inviteCode: mockInviteCode
+      inviteCode: mockInviteCode,
+      hackathonSlug: slug
     });
     
     handleCreateTeamModalClose();
@@ -368,23 +369,12 @@ const HackathonDetails = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-light-primary text-dark-primary font-outfit">
-      <motion.button
-        onClick={() => navigate("/dashboard/hackathons")}
-        className="flex items-center text-dark-primary hover:text-dark-secondary1 mb-4 font-poppins"
-        initial={{ x: -20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <ArrowLeftIcon className="w-4 h-4 mr-1" />
-        Back to Hackathons
-      </motion.button>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="bg-gradient-to-r from-dark-primary to-dark-secondary1 rounded-xl text-light-secondary2 p-6 mb-8 shadow-lg">
+        <div className="bg-gradient-to-r from-dark-primary to-dark-secondary1 rounded-xl text-light-secondary2 p-6 mt-2 mb-8 shadow-lg">
           <div className="max-w-3xl">
             <h1 className="text-4xl font-bold mb-2 font-poppins">{hackathon.name}</h1>
             <p className="mb-4 text-light-secondary1 font-dmsans">{hackathon.description}</p>
@@ -573,7 +563,7 @@ Good luck to all participants!`
         isOpen={showCreateTeamModal}
         onClose={handleCreateTeamModalClose}
         onSubmit={handleTeamSubmit}
-        hackathonId={id}
+        hackathonSlug={slug}
       />
 
       {/* Invite Members Modal */}
@@ -590,7 +580,7 @@ Good luck to all participants!`
         isOpen={showJoinTeamModal}
         onClose={handleJoinTeamModalClose}
         onSubmit={handleJoinTeam}
-        hackathonId={id}
+        hackathonSlug={slug}
       />
     </div>
   );

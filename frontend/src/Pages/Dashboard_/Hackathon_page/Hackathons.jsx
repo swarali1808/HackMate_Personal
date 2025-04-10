@@ -598,7 +598,7 @@ Remember to have fun and collaborate respectfully with all participants!`;
                   </div>
                 </div>
                 <Link
-                  to={`/dashboard/hackathon/${hackathon.id}`}
+                  to={`/dashboard/hackathon/${hackathon.slug}`}
                   className="w-full bg-dark-primary text-light-secondary2 px-4 py-2 rounded-lg text-center font-poppins hover:bg-dark-secondary1 transition-colors duration-300 block"
                 >
                   View Details

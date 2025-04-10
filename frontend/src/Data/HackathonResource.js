@@ -3,6 +3,7 @@ const hackathonData = [
     {
       id: "hack1",
       name: "AI Health Innovate 2025",
+      slug: "ai-health-innovate-2025",
       description: "Explore AI solutions for healthcare challenges.",
       domains: ["AI/ML", "HealthTech"],
       startDate: "2025-04-10T00:00:00Z",
@@ -41,6 +42,7 @@ const hackathonData = [
     {
       id: "hack2",
       name: "Web3 Summit 2025",
+      slug: "web3-summit-2025",
       description: "Build decentralized apps for the future.",
       domains: ["Blockchain", "Web3"],
       startDate: "2025-05-01T00:00:00Z",
@@ -79,6 +81,7 @@ const hackathonData = [
     {
       id: "hack3",
       name: "Green Tech Challenge",
+      slug: "green-tech-challenge",
       description: "Innovate for a sustainable future.",
       domains: ["CleanTech", "IoT"],
       startDate: "2025-03-15T00:00:00Z",

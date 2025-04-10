@@ -4,13 +4,13 @@ import HackathonSidebar from "../../../Component/HackathonSidebar.jsx"; // Adjus
 
 const HackathonLayout = () => {
   const location = useLocation();
-  const { id } = useParams();
+  const { slug } = useParams();
 
   // Helper function to get the current page title
   const getPageTitle = () => {
     const path = location.pathname;
     
-    if (path === `/dashboard/hackathon/${id}`) {
+    if (path === `/dashboard/hackathon/${slug}`) {
       return "Hackathon Overview";
     }
     
@@ -23,7 +23,7 @@ const HackathonLayout = () => {
   return (
     <div className="dash-container flex h-screen bg-gray-100">
       {/* Hackathon-specific Sidebar */}
-      <HackathonSidebar hackathonId={id} />
+      <HackathonSidebar hackathonSlug={slug} />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
