@@ -15,29 +15,11 @@ class AuthController {
         email,
         password,
         name,
-        githubId,
-        linkedinId,
-        portfolioUrl,
-        bio,
-        avatarUrl,
-        skills,
-        experience,
-        interests,
-        timeZone,
       } = req.body;
       const user = await authService.signup(
         email,
         password,
         name,
-        githubId,
-        linkedinId,
-        portfolioUrl,
-        bio,
-        avatarUrl,
-        skills,
-        experience,
-        interests,
-        timeZone
       );
       res.status(201).json({ message: "User created", user });
     } catch (error) {

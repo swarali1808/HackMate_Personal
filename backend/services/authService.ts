@@ -14,43 +14,18 @@ export class AuthService {
   async signup(
     email: string,
     password: string | null,
-    name: string,
-    githubId?: string,
-    linkedinId?: string,
-    portfolioUrl?: string,
-    bio?: string,
-    avatarUrl?: string,
-    skills?: string[],
-    experience?: any,
-    interests?: string[],
-    timeZone?: string
+    name: string
   ) {
     // If password exists, hash it (for normal signup)
     const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
 
     // Auto-detect time zone if not provided
-    const userTimeZone = timeZone || moment.tz.guess();
 
     const user = await prisma.user.create({
       data: {
         email,
         name,
         password: hashedPassword,
-        githubId,
-        linkedinId,
-        portfolioUrl,
-        bio,
-        avatarUrl,
-        skills: {
-          connectOrCreate:
-            skills?.map((skill) => ({
-              where: { name: skill },
-              create: { name: skill },
-            })) || [],
-        },
-        experience,
-        interests: interests || [],
-        timeZone: userTimeZone,
         isEmailVerified: false,
         status: "active",
         lastLogin: new Date(),
