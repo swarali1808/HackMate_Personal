@@ -1,11 +1,12 @@
 import React from "react";
 import JiraBoardComponent from "./Jira Board/JiraBoardComponent";
-// Adjusted path if needed
+import TeammateDashboard from "./Jira Board/TeammateDashboard";
 
 export const JiraBoard = () => {
   return (
     <div className="p-6">
       <JiraBoardComponent />
+      <TeammateDashboard />
     </div>
   );
 };
