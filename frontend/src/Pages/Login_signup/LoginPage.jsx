@@ -1,20 +1,104 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, Home, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-// Fix 1: Comment out the direct import and use a placeholder or public URL instead
+import axios from 'axios';
 import image2 from "../../Assets/loginimg.jpg";
-import { FaGoogle, FaApple } from "react-icons/fa";
+import { FaGoogle, FaGithub } from "react-icons/fa";
+import { useAuth } from "../../Context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState(""); // Added name state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://hackmate-personal.onrender.com';
 
-  // Use a placeholder image or reference from public folder
-  const imagePath = "/assets/loginimg.jpg"; // Assuming it's in the public/assets folder
+  // Direct API login function (backup method) - REMOVED withCredentials flag
+  const directApiLogin = async () => {
+    try {
+      setIsLoading(true);
+      
+      console.log("Making direct API login call to:", `${API_BASE_URL}/auth/login`);
+      
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+        email,
+        password
+      });
+      
+      console.log("Direct login response:", response.data);
+      
+      // Store tokens
+      const { accessToken, refreshToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      
+      toast.success("Login successful!");
+      
+      // Force refresh to dashboard
+      window.location.href = '/dashboard';
+      return;
+    } catch (err) {
+      console.error("Direct login failed:", err);
+      const errorMessage = err.response?.data?.message || 
+                           err.response?.data?.error || 
+                           "Login failed. Please check your credentials.";
+      toast.error(errorMessage);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!email || !password) {
+      toast.error("Please enter both email and password");
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      try {
+        // First try using the auth context
+        console.log("Login attempt with:", email);
+        await login(email, password);
+        toast.success("Login successful!");
+        navigate('/dashboard');
+      } catch (contextError) {
+        console.error("Login via context failed, trying direct API:", contextError);
+        // If that fails, try direct API call
+        await directApiLogin();
+      }
+    } catch (error) {
+      console.error("All login attempts failed:", error);
+      const errorMessage = error.response?.data?.message || 
+                           error.response?.data?.error || 
+                           "Login failed. Please check your credentials.";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // Handle social logins
+  const handleGoogleLogin = () => {
+    console.log("Redirecting to Google OAuth");
+    window.location.href = `${API_BASE_URL}/auth/google`;
+  };
+  
+  const handleGithubLogin = () => {
+    console.log("Redirecting to GitHub OAuth");
+    window.location.href = `${API_BASE_URL}/auth/github`;
+  };
 
   // Logo animation variants
   const logoVariants = {
@@ -70,12 +154,6 @@ const LoginPage = () => {
     },
   };
 
-  // Button animations
-  const buttonVariants = {
-    hover: { scale: 1.02, transition: { duration: 0.2 } },
-    tap: { scale: 0.98 },
-  };
-
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen font-poppins">
       {/* Left Section with Form */}
@@ -107,22 +185,7 @@ const LoginPage = () => {
             </p>
           </div>
 
-          <form className="space-y-5">
-            {/* Added name input field */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Name"
-                className="w-full h-12 bg-gray-900 bg-opacity-60 border border-gray-800 rounded-lg p-3 text-white font-poppins focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-500"
-              />
-            </motion.div>
-
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -134,6 +197,7 @@ const LoginPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 className="w-full h-12 bg-gray-900 bg-opacity-60 border border-gray-800 rounded-lg p-3 text-white font-poppins focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-500"
+                required
               />
             </motion.div>
 
@@ -149,6 +213,7 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 className="w-full h-12 bg-gray-900 bg-opacity-60 border border-gray-800 rounded-lg p-3 pr-10 text-white font-poppins focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-500"
+                required
               />
               <button
                 type="button"
@@ -210,9 +275,19 @@ const LoginPage = () => {
                 background: "linear-gradient(90deg, #7e22ce 0%, #6d28d9 100%)",
                 boxShadow: "0 8px 20px -3px rgba(123, 31, 162, 0.5)",
               }}
+              disabled={isLoading}
             >
-              <span>Log in</span>
-              <ArrowRight size={18} className="ml-2" />
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <span className="ml-2">Logging in...</span>
+                </div>
+              ) : (
+                <>
+                  <span>Log in</span>
+                  <ArrowRight size={18} className="ml-2" />
+                </>
+              )}
             </motion.button>
 
             <motion.div
@@ -235,6 +310,7 @@ const LoginPage = () => {
                 className="flex-1 flex justify-center items-center py-2 px-4 border border-gray-800 rounded-lg bg-gray-900 bg-opacity-60 hover:bg-opacity-80 text-white font-poppins"
                 whileHover={{ scale: 1.03, borderColor: "#6d28d9" }}
                 whileTap={{ scale: 0.97 }}
+                onClick={handleGoogleLogin}
               >
                 <FaGoogle
                   className="w-5 h-5 mr-2"
@@ -246,11 +322,12 @@ const LoginPage = () => {
                 className="flex-1 flex justify-center items-center py-2 px-4 border border-gray-800 rounded-lg bg-gray-900 bg-opacity-60 hover:bg-opacity-80 text-white font-poppins"
                 whileHover={{ scale: 1.03, borderColor: "#6d28d9" }}
                 whileTap={{ scale: 0.97 }}
+                onClick={handleGithubLogin}
               >
-                <FaApple
+                <FaGithub
                   className="w-5 h-5 mr-2"
                 />
-                Github
+                GitHub
               </motion.button>
             </motion.div>
           </form>

@@ -1,28 +1,11 @@
-import { createContext, useState, useEffect } from "react";
+import React from 'react';
+// No need to import AuthProvider here as we'll add it in main.jsx
 
-export const AppContext = createContext();
+const AppContextProvider = ({ children }) => {
+  return (
+    // Just pass children directly
+    <>{children}</>
+  );
+};
 
-export default function AppContextProvider({ children }) {
-    const [darkMode, setDarkMode] = useState(
-        localStorage.getItem("theme") === "dark"
-    );
-
-    useEffect(() => {
-        if (darkMode) {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-        } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-        }
-    }, [darkMode]);
-
-    
-
-    const value = {
-        darkMode,
-        setDarkMode,
-    };
-
-    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-}
+export default AppContextProvider;

@@ -7,10 +7,13 @@ import SignUpPage from "./Pages/Login_signup/SignUpPage.jsx";
 import NotFound from "./Pages/NotFound Page/NotFound.jsx";
 import Home from "./Pages/Landing/Home.jsx";
 import ScrollToTop from "./ScrollToTop.jsx";
+import ProtectedRoute from "./Component/ProtectedRoute.jsx";
+import OAuthSuccess from "./Pages/Login_signup/OAuthSuccess.jsx";
+import { useAuth } from "./Context/AuthContext";
 
 // Dashboard components
 import Hackathons from "./Pages/Dashboard_/Hackathon_page/Hackathons.jsx";
-import HackathonDetails from "../src/Pages/Dashboard_/Hackathon_page/HackathonDeatils.jsx"; // Ensure this file exists
+import HackathonDetails from "../src/Pages/Dashboard_/Hackathon_page/HackathonDeatils.jsx";
 import Resources from "./Pages/Dashboard_/Resources_page/Resources.jsx";
 import ResourcePage from "./Pages/Dashboard_/Resources_page/ResourcePage.jsx";
 import Community from "./Pages/Dashboard_/Community_page/Community.jsx";
@@ -36,7 +39,6 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // Log the error to console for debugging
     console.error("Error caught by ErrorBoundary:", error);
     console.error("Error Info:", errorInfo);
     this.setState({ error, errorInfo });
@@ -53,8 +55,7 @@ class ErrorBoundary extends React.Component {
             <p className="text-dark-secondary1 mt-2">
               Please try refreshing the page or contact support if the issue persists.
             </p>
-            {/* Optional: Display error details in development */}
-            {process.env.NODE_ENV === "development" && (
+            {import.meta.env.MODE === "development" && (
               <pre className="text-red-600 mt-4">
                 {this.state.error?.toString()}
                 <br />
@@ -70,7 +71,7 @@ class ErrorBoundary extends React.Component {
 }
 
 const App = () => {
-  const isAuthenticated = true; // Replace with real auth logic later
+  const { currentUser } = useAuth();
 
   return (
     <div className="min-h-screen max-w-screen m-0 p-0 overflow-x-hidden overflow-y-auto relative transition-all scroll-smooth">
@@ -78,38 +79,54 @@ const App = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
-        <Route path="/login" element={<ErrorBoundary><LoginPage /></ErrorBoundary>} />
-        <Route path="/signup" element={<ErrorBoundary><SignUpPage /></ErrorBoundary>} />
-
-        {/* Hackathon special routes with custom sidebar */}
         <Route 
-          path="/dashboard/hackathon/:slug/*" 
-          element={isAuthenticated ? <HackathonLayout /> : <Navigate to="/login" />}
-        >
-          <Route index element={<ErrorBoundary><HackathonDetails /></ErrorBoundary>} />
-          <Route path="jira" element={<ErrorBoundary><JiraBoard /></ErrorBoundary>} />
-          <Route path="draw" element={<ErrorBoundary><Excalidraw /></ErrorBoundary>} />
-          <Route path="resources" element={<ErrorBoundary><HackathonResources /></ErrorBoundary>} />
-          <Route path="project" element={<ErrorBoundary><Project /></ErrorBoundary>} />
-          <Route path="submit" element={<ErrorBoundary><Submit /></ErrorBoundary>} />
-        </Route>
+          path="/login" 
+          element={
+            currentUser ? 
+            <Navigate to="/dashboard" /> : 
+            <ErrorBoundary><LoginPage /></ErrorBoundary>
+          } 
+        />
+        <Route 
+          path="/signup" 
+          element={
+            currentUser ? 
+            <Navigate to="/dashboard" /> : 
+            <ErrorBoundary><SignUpPage /></ErrorBoundary>
+          }
+        />
+        <Route path="/auth/success" element={<ErrorBoundary><OAuthSuccess /></ErrorBoundary>} />
 
-        {/* Protected Dashboard Routes */}
-        <Route
-          path="/dashboard/*"
-          element={isAuthenticated ? <DashApp /> : <Navigate to="/login" />}
-        >
-          <Route path="hackathons" element={<ErrorBoundary><Hackathons /></ErrorBoundary>} />
-          <Route path="resources" element={<ErrorBoundary><Resources /></ErrorBoundary>} />
-          <Route path="resources/:slug" element={<ErrorBoundary><ResourcePage /></ErrorBoundary>} />
-          <Route path="community" element={<ErrorBoundary><Community /></ErrorBoundary>} />
-          <Route path=":userId" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
-          <Route path=":userId/view" element={<ErrorBoundary><ProfileView /></ErrorBoundary>} />
-          
-          {/* Placeholder routes for other sidebar items */}
-          <Route path="products" element={<div className="p-4">Products Page</div>} />
-          <Route path="tags" element={<div className="p-4">Tags Page</div>} />
-          <Route path="analytics" element={<div className="p-4">Analytics Page</div>} />
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          {/* Hackathon special routes with custom sidebar */}
+          <Route 
+            path="/dashboard/hackathon/:slug/*" 
+            element={<HackathonLayout />}
+          >
+            <Route index element={<ErrorBoundary><HackathonDetails /></ErrorBoundary>} />
+            <Route path="jira" element={<ErrorBoundary><JiraBoard /></ErrorBoundary>} />
+            <Route path="draw" element={<ErrorBoundary><Excalidraw /></ErrorBoundary>} />
+            <Route path="resources" element={<ErrorBoundary><HackathonResources /></ErrorBoundary>} />
+            <Route path="project" element={<ErrorBoundary><Project /></ErrorBoundary>} />
+            <Route path="submit" element={<ErrorBoundary><Submit /></ErrorBoundary>} />
+          </Route>
+
+          {/* Dashboard Routes */}
+          <Route path="/dashboard/*" element={<DashApp />}>
+            <Route index element={<div>Welcome to your dashboard!</div>} />
+            <Route path="hackathons" element={<ErrorBoundary><Hackathons /></ErrorBoundary>} />
+            <Route path="resources" element={<ErrorBoundary><Resources /></ErrorBoundary>} />
+            <Route path="resources/:slug" element={<ErrorBoundary><ResourcePage /></ErrorBoundary>} />
+            <Route path="community" element={<ErrorBoundary><Community /></ErrorBoundary>} />
+            <Route path=":userId" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+            <Route path=":userId/view" element={<ErrorBoundary><ProfileView /></ErrorBoundary>} />
+            
+            {/* Placeholder routes for other sidebar items */}
+            <Route path="products" element={<div className="p-4">Products Page</div>} />
+            <Route path="tags" element={<div className="p-4">Tags Page</div>} />
+            <Route path="analytics" element={<div className="p-4">Analytics Page</div>} />
+          </Route>
         </Route>
 
         {/* Fallback Route */}
