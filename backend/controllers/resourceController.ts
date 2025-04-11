@@ -46,7 +46,12 @@ export const resourceController = {
       const { slug } = req.params;
       const resource = await resourceService.getResourceBySlug(slug);
       if (!resource) {
-        return res.status(404).json({ error: "Resource not found" });
+        return res.status(404).json({
+          success: false,
+          data: null,
+          error: "Resource not found",
+          metadata: { timestamp: new Date().toISOString(), version: "1.0.0" },
+        });
       }
       res.status(200).json({
         success: true,

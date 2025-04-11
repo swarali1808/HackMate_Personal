@@ -63,22 +63,4 @@ export const resourceService = {
       where: { id },
     });
   },
-
-  async getResourceBySlug(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { slug } = req.params;
-      const resource = await resourceService.getResourceBySlug(slug);
-      if (!resource) {
-        return res.status(404).json({ error: "Resource not found" });
-      }
-      res.status(200).json({
-        success: true,
-        data: resource,
-        error: null,
-        metadata: { timestamp: new Date().toISOString(), version: "1.0.0" },
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
 };
