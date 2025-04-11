@@ -6,16 +6,18 @@ import SocialLinksTab from './TabComponents/SocialLinksTab';
 import TaglineTab from './TabComponents/TagLineTab';
 import BadgesTab from './TabComponents/BadgesTab';
 import { useParams } from 'react-router-dom';
+import { useAuth } from "../../../Context/AuthContext";
 
 const Profile = () => {
   const { userId } = useParams()
+  const { currentUser } = useAuth()
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('Education');
   const [editIndex, setEditIndex] = useState(-1); // -1 means adding new, >= 0 means editing
   const [editData, setEditData] = useState(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [deleteInfo, setDeleteInfo] = useState({ type: '', index: -1 });
-  const [currentUser] = useState('tanishshah20');
+  // const [currentUser] = useState('tanish-shah');
   const [currentDate] = useState('2025-04-05');
   
   // State to store data for each tab
@@ -181,8 +183,8 @@ const Profile = () => {
         onEditItem={openEditModal}
         onDeleteItem={openDeleteConfirm}
         profileData={profileData}
-        username={currentUser}
-        userId={currentUser}
+        username={currentUser.name}
+        slug={currentUser.slug}
         predefinedSkills={predefinedSkills}
       />
       

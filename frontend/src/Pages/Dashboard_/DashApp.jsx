@@ -37,9 +37,9 @@ const DashApp = () => {
 
       {/* Main Content */}
       <div className="routes flex-1 flex flex-col overflow-hidden">
-        <header className="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-10">
+        {/* <header className="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-10">
           <h1 className="text-xl font-semibold">{getPageTitle()}</h1>
-        </header>
+        </header> */}
         <main className="flex-1 overflow-y-auto">
           {showDashboard ? <Dashboard /> : <Outlet />}
         </main>

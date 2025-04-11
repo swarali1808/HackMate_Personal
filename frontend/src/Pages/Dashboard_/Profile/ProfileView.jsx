@@ -7,14 +7,15 @@ import {
 } from 'react-icons/fi';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useAuth } from '../../../Context/AuthContext';
 
 const ProfileView = () => {
   const navigate = useNavigate();
   const { userId } = useParams()
+  const { currentUser } = useAuth()
   const [profileData, setProfileData] = useState(null);
   const [resumeData, setResumeData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentUser] = useState('tanishshah20');
   const [generatingPDF, setGeneratingPDF] = useState(false);
   
   useEffect(() => {
@@ -87,7 +88,7 @@ const ProfileView = () => {
           imgHeight * ratio
         );
         
-        pdf.save(`${currentUser}_profile_resume.pdf`);
+        pdf.save(`${currentUser.name}_profile_resume.pdf`);
       }
     } catch (error) {
       console.error('Error generating PDF:', error);
@@ -112,7 +113,7 @@ const ProfileView = () => {
         <div className="bg-white p-8 rounded-lg shadow">
           <p className="text-[#340062]">No profile data found. Please create your profile first.</p>
           <button 
-            onClick={() => navigate(`/dashboard/${currentUser ? currentUser : "tanishshah20"}`)}
+            onClick={() => navigate(`/dashboard/${currentUser.slug}`)}
             className="mt-4 px-6 py-2 bg-[#340062] text-white font-medium rounded-md"
           >
             Go to Profile
@@ -123,7 +124,7 @@ const ProfileView = () => {
   }
   
   // Get first letter of username for avatar
-  const userInitial = currentUser ? currentUser.charAt(0).toUpperCase() : 'T';
+  const userInitial = currentUser ? currentUser.name.charAt(0).toUpperCase() : 'T';
   
   return (
     <div className="min-h-screen bg-[#f6ebff] bg-opacity-30 py-6 px-4 font-dmsans">
@@ -166,8 +167,8 @@ const ProfileView = () => {
             </div>
             
             <div className="flex-grow">
-              <h1 className="text-3xl font-bold text-[#340062]">Tanish Shah</h1>
-              <p className="text-lg text-[#11014c]">@{currentUser}</p>
+              <h1 className="text-3xl font-bold text-[#340062]">{currentUser.name}</h1>
+              <p className="text-lg text-[#11014c]">@{currentUser.slug}</p>
               
               {profileData.Tagline && (
                 <p className="mt-2 text-[#11014c]">{profileData.Tagline}</p>

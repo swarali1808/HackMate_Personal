@@ -248,11 +248,11 @@ const Option = ({ Icon, title, path, selected, setSelected, open, notifs }) => {
 
 const TitleSection = ({ open }) => {
   const { currentUser } = useAuth();
-  const profileImage = currentUser?.profileImage || null;
+  const profileImage = null;
   const userName = currentUser?.name || "Guest User";
-  const userId = currentUser?.id || "profile";
+  const userSlug = currentUser?.slug || "guest-user";
   const userEmail = currentUser?.email || "Not logged in";
-
+  
   return (
     <div className="mb-3 border-b border-[#b6cbff] pb-3">
       <div className="flex items-center justify-between rounded-md transition-colors">
@@ -278,7 +278,7 @@ const TitleSection = ({ open }) => {
             >
               <Link 
                 className="block text-sm font-semibold text-[#340062] truncate max-w-[120px]"
-                to={`/dashboard/${userId}`}
+                to={`/dashboard/${userSlug}`}
               >
                 {userName}
               </Link>

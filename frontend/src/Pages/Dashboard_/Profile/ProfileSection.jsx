@@ -9,7 +9,7 @@ const ProfileSection = ({
   onDeleteItem, 
   profileData, 
   username,
-  userId
+  slug
 }) => {
   const [activeTab, setActiveTab] = useState('Education');
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const ProfileSection = ({
   
   // Navigation handlers
   const handleViewProfile = () => {
-    navigate(`/dashboard/${userId}/view`);
+    navigate(`/dashboard/${slug}/view`);
   };
 
   // Function to render content based on active tab and data
@@ -441,8 +441,8 @@ const ProfileSection = ({
               {userInitial}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-[#340062]">Tanish Shah</h1>
-              <p className="text-sm text-[#11014c] mt-1">@{username || 'tanishshah20'}</p>
+              <h1 className="text-xl font-bold text-[#340062]">{username}</h1>
+              <p className="text-sm text-[#11014c] mt-1">@{slug}</p>
             </div>
           </div>
           <div className="mt-4 md:mt-0 flex gap-3">
