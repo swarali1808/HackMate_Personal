@@ -11,15 +11,12 @@ import crypto from "crypto";
 const prisma = new PrismaClient();
 
 export class AuthService {
-  async signup(
-    email: string,
-    password: string | null,
-    name: string
-  ) {
+  async signup(email: string, password: string | null, name: string) {
     // If password exists, hash it (for normal signup)
     const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
 
-    // Auto-detect time zone if not provided
+    // Generate slug from email instead of name
+    const slug = this.generateSlug(email);
 
     const user = await prisma.user.create({
       data: {
@@ -29,6 +26,7 @@ export class AuthService {
         isEmailVerified: false,
         status: "active",
         lastLogin: new Date(),
+        slug, // Store the slug in the database
       },
     });
 
@@ -36,7 +34,17 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    const user = await prisma.user.findUnique({ where: { email } });
+    // Make sure email is a valid string and not undefined
+    if (!email) {
+      throw new Error("Email is required");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
     if (
       !user ||
       !user.password ||
@@ -44,7 +52,22 @@ export class AuthService {
     ) {
       throw new Error("Invalid credentials");
     }
+
     return this.generateTokens(user);
+  }
+
+  // Helper function to generate slug from email
+  private generateSlug(email: string): string {
+    // Extract everything before the @ symbol
+    const slugPart = email.split("@")[0];
+
+    // Convert to lowercase and remove any special characters
+    return slugPart
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "") // Remove special chars except alphanumeric, whitespace, and hyphens
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-"); // Remove consecutive hyphens
   }
 
   async generateTokens(user: User) {
@@ -63,7 +86,19 @@ export class AuthService {
       data: { refreshToken, lastLogin: new Date() },
     });
 
-    return { accessToken, refreshToken };
+    // Use the stored slug from the user object or generate one from email if it doesn't exist
+    const userSlug = user.slug || this.generateSlug(user.email);
+
+    return {
+      accessToken,
+      refreshToken,
+      user: {
+        name: user.name,
+        email: user.email,
+        id: user.id,
+        slug: userSlug,
+      },
+    };
   }
 
   async logout(userId: string) {

@@ -11,16 +11,8 @@ const prisma = new PrismaClient();
 class AuthController {
   async signup(req: Request, res: Response, next: NextFunction) {
     try {
-      const {
-        email,
-        password,
-        name,
-      } = req.body;
-      const user = await authService.signup(
-        email,
-        password,
-        name,
-      );
+      const { email, password, name } = req.body;
+      const user = await authService.signup(email, password, name);
       res.status(201).json({ message: "User created", user });
     } catch (error) {
       next(error);
@@ -30,11 +22,11 @@ class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
-      const { accessToken, refreshToken } = await authService.login(
+      const { accessToken, refreshToken, user } = await authService.login(
         email,
         password
       );
-      res.json({ accessToken, refreshToken });
+      res.json({ accessToken, refreshToken, user });
     } catch (error) {
       next(error);
     }
